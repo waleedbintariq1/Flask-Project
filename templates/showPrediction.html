@@ -103,14 +103,6 @@
       </div>
     </nav>
 
-    <h1 class="mt-5 text-center" style="color: white">
-      Welcome, {{doctor.firstName}}
-    </h1>
-    <link
-      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-      rel="stylesheet"
-      id="bootstrap-css"
-    />
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
@@ -128,29 +120,24 @@
         padding: 5em;
       "
     >
-      <form
-        class="box"
-        action="showPrediction"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <div style="display: flex; flex-direction: column; gap: 2em">
-          <input
-            class="upload"
-            type="file"
-            accept=".png,.jpg,.jpeg"
-            name="image"
-            required
-          />
-          <button
-            style="width: fit-content"
-            class="btn btn-outline-success"
-            type="submit"
+      <h2 class="text">
+        Disease Detected {{ result[1] }} Confidence : {{ result[2] }}
+      </h2>
+
+      <div style="display: flex">
+        <img src="{{ result[0] }}" height="500" width="500" />
+
+        <div
+          class="container"
+          style="display: flex; align-items: center; justify-content: center"
+        >
+          <a href="/savePatient"
+            ><button style="height: fit-content" class="btn btn-success">
+              Save Patient Details
+            </button></a
           >
-            Predict
-          </button>
         </div>
-      </form>
+      </div>
     </div>
     <!-- Optional JavaScript; choose one of the two! -->
 
@@ -168,3 +155,66 @@
     -->
   </body>
 </html>
+
+<!-- <html lang="en">
+  <style>
+        body {
+
+            background-repeat: no-repeat;
+            background-size: 1500px ,1500px;
+            background-color: white;
+            /* {#background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);#}
+            {#background-image: url('./static/web_back.jpg');#}
+            height: 100%;
+            background-image: url('./static/web_back1.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover; */
+
+        }
+        .text{
+            color: white;
+            text-align: center;
+        }
+        img{
+
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 50%;
+        }
+
+        .neon {
+          color: #fff;
+          text-shadow:
+            0 0 5px #fff,
+            0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 40px #0ff
+            0 0 80px #0ff
+            {#0 0 90px #0ff,#}
+            {#0 0 100px #0ff,#}
+            {#0 0 150px #0ff;#}
+    }
+  </style>
+
+  <body
+    style="
+      background: #ff416c;
+      background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+      background: linear-gradient(to right, #ff4b2b, #ff416c);
+    "
+  >
+    <h1 class="text">Results Page</h1>
+    <div style="background-color: #1fddff">
+      <h2 class="text" style="color: white">
+        Disease Detected {{ result[1] }} Confidence : {{ result[2] }}
+      </h2>
+    </div>
+
+    <div style="display: flex; gap: 5em">
+      <img src="{{ result[0] }}" height="500" width="100" />
+      <button class="btn btn-success">Save Patient Details</button>
+    </div>
+  </body>
+</html> -->

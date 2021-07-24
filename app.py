@@ -11,7 +11,7 @@ import Model
 app = Flask(__name__)
 
 path = 'K:\Study\Semester 8\FYP 2\Flask Project\static'
-relative_path ="/static/"
+relative_path ="../static/"
 model = Model.Model()
 
 app = Flask(__name__)
@@ -40,6 +40,11 @@ class patient:
     doctorEmail = ""
 
 d = doctor()
+
+diseaseDetails = {
+    "name": "abc",
+    "path": "def"
+}
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -95,45 +100,29 @@ def login():
 def homepage():
     return render_template("homepage.html", doctor=d)
 
-@app.route('/newPatient', methods=['GET', 'POST'])
-def newPatient():
+@app.route('/savePatient', methods=['GET', 'POST'])
+def savePatient():
     if request.method == "POST":
         details = request.form
         email = details['email']
         firstName = details['fname']
         lastName = details['lname']
 
+        # diseaseDetails is global
+        diseaseName = diseaseDetails['name']
+        xrayPath = diseaseDetails['path']
+
         doctorEmail = d.email
 
-        if "img" not in request.files:
-            return "image not uploaded!"
-        
-        xrayImage = request.files['img']
-        filename = xrayImage.filename
-
-        xrayPath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-
-        print("xray path: " + xrayPath)
-
-        xrayImage.save(xrayPath)
-
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO patients values (%s, %s, %s, %s, %s, %s)", [email, firstName, lastName, xrayPath, "COVID-19", doctorEmail])
+        cur.execute("INSERT INTO patients values (%s, %s, %s, %s, %s, %s)", [email, firstName, lastName, xrayPath, diseaseName, doctorEmail])
         
         mysql.connection.commit()
         cur.close()
 
-        # gulraiz code
-        prediction=[]
-        if xrayImage.filename != '':
-            prediction.append(xrayPath)
-            disease,score=(model.predict(xrayPath))
-            prediction.append(disease)
-            prediction.append(score*100)
+        return render_template("homepage.html", doctor=d)
 
-        return render_template('Result.html',result=prediction)
-
-    return render_template("newPatient.html")
+    return render_template("savePatient.html")
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():
@@ -184,33 +173,31 @@ def deletePatient():
     return render_template('deletePatient.html', emailList=patientEmailList)
 
 
-
-
-
-# @app.route('/showPrediction/<xrayPath>', methods=['POST'])
-# def showPrediction(xrayPath):
-    # uploaded_file = request.files['image']
-
-    xrayImageName = xrayPath.split('/')[6]
-    print("name: " + xrayImageName)
-
-    img = cv2.imread(app.config['UPLOAD_FOLDER'], xrayImageName)
-
-    name = path + uploaded_file.filename
+@app.route('/showPrediction', methods=['POST'])
+def showPrediction():
+    uploaded_file = request.files['image']
+    name = path+uploaded_file.filename
+    imagePath = relative_path + uploaded_file.filename
 
     print(name)
     prediction=[]
     if uploaded_file.filename != '':
         uploaded_file.save(name)
         #prediction = model.predict(name)
-        display = relative_path+uploaded_file.filename
-        print(display)
-        prediction.append(display)
+        prediction.append(imagePath)
+
+        print("asdas: " + prediction[0])
+
         disease,score=(model.predict(name))
         prediction.append(disease)
         prediction.append(score*100)
 
-    return render_template('Result.html',result=prediction)
+        diseaseDetails['name'] = disease
+        diseaseDetails['path'] = imagePath
+
+    return render_template('showPrediction.html',result=prediction)
+
+
 
 
 if __name__ == "__main__":

@@ -1,0 +1,103 @@
+<html>
+<style>
+    body {
+
+        background-repeat: no-repeat;
+        background-size: 1500px ,1500px;
+        background-color: #4158D0;
+        {#background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);#}
+        background-image: url('./static/web_back1.jpg');
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+
+
+
+    }
+    .box{
+        text-align: center;
+    width: 280px;
+    height: 300px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+
+}
+    .btn-grad {background-image: linear-gradient(to right, #E55D87 0%, #5FC3E4  51%, #E55D87  100%)}
+         .btn-grad {
+
+            padding: 8px 30px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;
+
+
+            display: block;
+            border: 5px;
+            margin-top: 130px;
+            margin-left: 45px;
+
+          }
+
+          .btn-grad:hover {
+            background-position: right center; /* change the direction of the change here */
+            color: #fff;
+            text-decoration: none;
+          }
+
+
+         .upload {background-image: linear-gradient(to right, #ff4b1f 0%, #1fddff  51%, #ff4b1f  100%)}
+         .upload {
+
+            padding: 5px 13px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+
+
+            display: block;
+            margin-left: -30px;
+            margin-top: 30px;
+          }
+
+          .upload:hover {
+            background-position: right center; /* change the direction of the change here */
+            color: #fff;
+            text-decoration: none;
+          }
+
+
+.glow {
+
+  color: #fff;
+  text-align: center;
+
+}
+
+
+
+</style>
+
+<body>
+
+<h1 style="text-align: center;color:white" class="glow">X-Ray Classification</h1>
+
+<form class="box" action="" method="post" enctype="multipart/form-data">
+<div style="position:absolute; top:0%; width:80%" ><h3 style="text-align:center">Upload Image</h3></div>
+<input class="upload"  type="file" accept=".png,.jpg,.jpeg" name="image" required>
+<button class="btn-grad" type="submit">Predict </button>
+
+
+</form>
+</body>
+</html>
