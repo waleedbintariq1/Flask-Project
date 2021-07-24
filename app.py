@@ -1,8 +1,18 @@
 from logging import NullHandler, debug
 from sys import meta_path
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_mysqldb import MySQL
 import os
+import Model
+
+
+
+
+app = Flask(__name__)
+
+path = 'K:\Study\Semester 8\FYP 2\Flask Project\static'
+relative_path ="/static/"
+model = Model.Model()
 
 app = Flask(__name__)
 
@@ -11,7 +21,7 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'fyp'
 
-app.config['UPLOAD_FOLDER'] = "K:\Study\Semester 8\FYP 2\Flask Project\outputImages"
+app.config['UPLOAD_FOLDER'] = "K:\Study\Semester 8\FYP 2\Flask Project\static"
 
 mysql = MySQL(app)
 
@@ -92,6 +102,7 @@ def newPatient():
         email = details['email']
         firstName = details['fname']
         lastName = details['lname']
+
         doctorEmail = d.email
 
         if "img" not in request.files:
@@ -111,6 +122,16 @@ def newPatient():
         
         mysql.connection.commit()
         cur.close()
+
+        # gulraiz code
+        prediction=[]
+        if xrayImage.filename != '':
+            prediction.append(xrayPath)
+            disease,score=(model.predict(xrayPath))
+            prediction.append(disease)
+            prediction.append(score*100)
+
+        return render_template('Result.html',result=prediction)
 
     return render_template("newPatient.html")
 
@@ -144,15 +165,16 @@ def deletePatient():
 
         patientEmailList = request.form.getlist("checkbox")
 
-      
-
         for patientEmail in patientEmailList:
             cur.execute("SELECT * FROM patients WHERE email = %s", [patientEmail])
             result = cur.fetchone()
 
             # deleting xray image
             xrayPath = result[3]
-            os.remove(xrayPath)
+            try:
+                os.remove(xrayPath)
+            except OSError:
+                pass
 
             cur.execute("DELETE FROM patients WHERE email = %s", [patientEmail])
             mysql.connection.commit()
@@ -160,6 +182,36 @@ def deletePatient():
         cur.close()
     
     return render_template('deletePatient.html', emailList=patientEmailList)
+
+
+
+
+
+# @app.route('/showPrediction/<xrayPath>', methods=['POST'])
+# def showPrediction(xrayPath):
+    # uploaded_file = request.files['image']
+
+    xrayImageName = xrayPath.split('/')[6]
+    print("name: " + xrayImageName)
+
+    img = cv2.imread(app.config['UPLOAD_FOLDER'], xrayImageName)
+
+    name = path + uploaded_file.filename
+
+    print(name)
+    prediction=[]
+    if uploaded_file.filename != '':
+        uploaded_file.save(name)
+        #prediction = model.predict(name)
+        display = relative_path+uploaded_file.filename
+        print(display)
+        prediction.append(display)
+        disease,score=(model.predict(name))
+        prediction.append(disease)
+        prediction.append(score*100)
+
+    return render_template('Result.html',result=prediction)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
