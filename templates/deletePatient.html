@@ -15,7 +15,13 @@
 
     <title>Delete Patient</title>
   </head>
-  <body>
+  <body
+    style="
+      background: #ff416c;
+      background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+      background: linear-gradient(to right, #ff4b2b, #ff416c);
+    "
+  >
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" style="color: white" href="homepage">Home</a>
@@ -32,15 +38,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a
-                style="color: white"
-                class="nav-link active"
-                aria-current="page"
-                href="#"
-                >New Patient</a
-              >
-            </li>
             <li class="nav-item">
               <a style="color: white" class="nav-link" href="/results"
                 >View Results</a
@@ -63,21 +60,21 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 40em;
+        height: 30em;
       "
     >
-      <h1>Deleted Patients</h1>
+      <h1 style="color: white">Deleted Patients</h1>
       <div
         class="container mt-5 w-50"
         style="
           border: 2px solid black;
           border-radius: 5px;
           padding: 5em;
-          background-color: rgb(248, 240, 229);
+          background-color: white;
         "
       >
         {% for email in emailList %}
-        <h4>Patient with email {{ email }} deleted!</h4>
+        <h5>Patient with email {{ email }} deleted!</h5>
         {% endfor %}
       </div>
     </div>

@@ -15,7 +15,13 @@
 
     <title>Results</title>
   </head>
-  <body>
+  <body
+    style="
+      background: #ff416c;
+      background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+      background: linear-gradient(to right, #ff4b2b, #ff416c);
+    "
+  >
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" style="color: white" href="homepage">Home</a>
@@ -55,14 +61,14 @@
         height: 40em;
       "
     >
-      <h1>Results</h1>
+      <h1 style="color: white">Results</h1>
       <div
         class="container mt-5 w-50"
         style="
           border: 2px solid black;
           border-radius: 5px;
           padding: 5em;
-          background-color: rgb(248, 240, 229);
+          background-color: white;
         "
       >
         <form method="POST" action="/deletePatient">
