@@ -3,7 +3,7 @@ from sys import meta_path
 from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_mysqldb import MySQL
 import os
-import Model
+# import Model
 
 
 
@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 path = 'K:\Study\Semester 8\FYP 2\Flask Project\static'
 relative_path ="../static/"
-model = Model.Model()
+# model = Model.Model()
 
 app = Flask(__name__)
 
@@ -161,8 +161,13 @@ def deletePatient():
 
         cur = mysql.connection.cursor()
 
-        if request.form['showButton'] is not None:
-            patientEmail = request.form['showButton']
+        for key,value in request.form.items():
+            print(key,value)
+
+
+        if request.form["showButton"] != "empty":
+            patientEmail = request.form["showButton"]
+
             cur.execute("SELECT * FROM patients WHERE email = %s", [patientEmail])
             result = cur.fetchone()
 
@@ -199,30 +204,30 @@ def deletePatient():
     return render_template('deletePatient.html', emailList=patientEmailList)
 
 
-@app.route('/showPrediction', methods=['GET', 'POST'])
-def showPrediction():
-    uploaded_file = request.files['image']
-    name = path+uploaded_file.filename
-    imagePath = relative_path + uploaded_file.filename
+# @app.route('/showPrediction', methods=['GET', 'POST'])
+# def showPrediction():
+#     uploaded_file = request.files['image']
+#     name = path+uploaded_file.filename
+#     imagePath = relative_path + uploaded_file.filename
 
-    print(name)
-    prediction=[]
-    if uploaded_file.filename != '':
-        uploaded_file.save(name)
-        #prediction = model.predict(name)
-        prediction.append(imagePath)
+#     print(name)
+#     prediction=[]
+#     if uploaded_file.filename != '':
+#         uploaded_file.save(name)
+#         #prediction = model.predict(name)
+#         prediction.append(imagePath)
 
-        print("asdas: " + prediction[0])
+#         print("asdas: " + prediction[0])
 
-        disease,score=(model.predict(name))
-        prediction.append(disease)
-        prediction.append(score*100)
+#         disease,score=(model.predict(name))
+#         prediction.append(disease)
+#         prediction.append(score*100)
 
-        diseaseDetails['name'] = disease
-        diseaseDetails['path'] = imagePath
-        diseaseDetails['accuracy'] = score * 100
+#         diseaseDetails['name'] = disease
+#         diseaseDetails['path'] = imagePath
+#         diseaseDetails['accuracy'] = score * 100
 
-    return render_template('showPrediction.html',result=prediction)
+#     return render_template('showPrediction.html',result=prediction)
 
 
 if __name__ == "__main__":

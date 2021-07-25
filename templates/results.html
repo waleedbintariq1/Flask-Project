@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script>
+      function changeButtonValue(patientEmail) {
+        document.getElementById("showButton").value = patientEmail;
+        alert(document.getElementById("showButton").value);
+      }
+    </script>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -94,9 +100,11 @@
                 <td>{{patient.email}}</td>
                 <td>
                   <button
-                    name="showButton"
+                    name="{{patient.email}}"
+                    id="showButton"
                     class="btn btn-outline-primary"
-                    value="{{patient.email}}"
+                    value="empty"
+                    onclick="changeButtonValue('{{patient.email}}')"
                   >
                     Show
                   </button>
@@ -112,8 +120,10 @@
               {% endfor %}
             </tbody>
           </table>
+          <p name="myParagraph" id="myParagraph" value="empty"></p>
           <div class="container mt-5">
             <button
+              id="showButton"
               type="submit"
               class="btn btn-outline-danger"
               style="float: right"
