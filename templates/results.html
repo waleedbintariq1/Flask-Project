@@ -99,15 +99,20 @@
                 <td>{{patient.disease}}</td>
                 <td>{{patient.email}}</td>
                 <td>
-                  <button
-                    name="{{patient.email}}"
+                  <!-- <button
+                    name="showButton"
                     id="showButton"
                     class="btn btn-outline-primary"
                     value="empty"
                     onclick="changeButtonValue('{{patient.email}}')"
                   >
                     Show
-                  </button>
+                  </button> -->
+                  <a
+                    href="/showImage/{{patient.email}}"
+                    class="btn btn-outline-primary"
+                    >Show</a
+                  >
                 </td>
                 <td>
                   <input
