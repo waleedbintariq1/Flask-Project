@@ -43,13 +43,14 @@ d = doctor()
 
 diseaseDetails = {
     "name": "abc",
-    "path": "def"
+    "path": "def",
+    "accuracy": 0
 }
 
 
 @app.route('/', methods=['GET', 'POST'])
 def mainPage():
-    return render_template("index.html")
+    return redirect("/login")
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -68,7 +69,12 @@ def signup():
         mysql.connection.commit()
         cur.close()
 
-    return render_template("signup.html")
+        d.email = details['email']
+        d.firstName = details['fname']
+        d.lastName = details['lname']
+        d.password = details['password']
+
+    return redirect("/homepage")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -111,11 +117,12 @@ def savePatient():
         # diseaseDetails is global
         diseaseName = diseaseDetails['name']
         xrayPath = diseaseDetails['path']
+        predictionAccuracy = diseaseDetails['accuracy']
 
         doctorEmail = d.email
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO patients values (%s, %s, %s, %s, %s, %s)", [email, firstName, lastName, xrayPath, diseaseName, doctorEmail])
+        cur.execute("INSERT INTO patients values (%s, %s, %s, %s, %s, %s, %s)", [email, firstName, lastName, xrayPath, diseaseName, predictionAccuracy, doctorEmail])
         
         mysql.connection.commit()
         cur.close()
@@ -147,10 +154,29 @@ def results():
 
     return render_template("results.html", patientList=patientList)
 
+# also includes code for calling showImage.html
 @app.route('/deletePatient', methods=["GET", "POST"])
 def deletePatient():
     if request.method == 'POST':
+
         cur = mysql.connection.cursor()
+
+        if request.form['showButton'] is not None:
+            patientEmail = request.form['showButton']
+            cur.execute("SELECT * FROM patients WHERE email = %s", [patientEmail])
+            result = cur.fetchone()
+
+            prediction = []
+            prediction.append(result[1])
+            prediction.append(result[2])
+            prediction.append(result[3])
+            prediction.append(result[4])
+            prediction.append(result[5])
+            
+
+            return render_template('showImage.html',result=prediction)
+
+
 
         patientEmailList = request.form.getlist("checkbox")
 
@@ -173,7 +199,7 @@ def deletePatient():
     return render_template('deletePatient.html', emailList=patientEmailList)
 
 
-@app.route('/showPrediction', methods=['POST'])
+@app.route('/showPrediction', methods=['GET', 'POST'])
 def showPrediction():
     uploaded_file = request.files['image']
     name = path+uploaded_file.filename
@@ -194,10 +220,9 @@ def showPrediction():
 
         diseaseDetails['name'] = disease
         diseaseDetails['path'] = imagePath
+        diseaseDetails['accuracy'] = score * 100
 
     return render_template('showPrediction.html',result=prediction)
-
-
 
 
 if __name__ == "__main__":

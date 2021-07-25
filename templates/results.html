@@ -79,6 +79,8 @@
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">Disease</th>
+                <th scope="col">Email</th>
+                <th scope="col">Show Prediction</th>
                 <th scope="col">Select</th>
               </tr>
             </thead>
@@ -89,6 +91,16 @@
                 <td>{{patient.firstName}}</td>
                 <td>{{patient.lastName}}</td>
                 <td>{{patient.disease}}</td>
+                <td>{{patient.email}}</td>
+                <td>
+                  <button
+                    name="showButton"
+                    class="btn btn-outline-primary"
+                    value="{{patient.email}}"
+                  >
+                    Show
+                  </button>
+                </td>
                 <td>
                   <input
                     type="checkbox"

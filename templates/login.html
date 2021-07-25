@@ -312,29 +312,37 @@ footer a {
 <body>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
-		<form action="#" method="POST">
+		<form action="signup" method="POST"  enctype="multipart/form-data">
 			<h1>Create Account</h1>
 			<div class="social-container">
 
 			</div>
 		<div class="middle">
-			<input type="text" placeholder="Name" id="name"/>
+			<input name="fname" type="text" placeholder="First Name" id="fname"/>
 
 			<p id="invalid_name"></p>
 
-			<input class="short" type="email" placeholder="Email" id="email" />
+      <input name="lname" type="text" placeholder="Last Name" id="lname"/>
+
+			<p id="invalid_name"></p>
+
+			<input name="email" class="short" type="email" placeholder="Email" id="email" />
 
 
 				<p id="invalid_email"></p>
 
-			<input class="short" type="password" placeholder="Password" id="password"/>
+			<input name="password" class="short" type="password" placeholder="Password" id="password"/>
 			<p id="invalid_password"></p>
-			<button type="button" onclick="vaildation()" >Sign Up</button>
+
+      <button type="submit" onclick="vaildation()" >Sign Up</button>
+    
+
 		</div>
 		</form>
 	</div>
+
 	<div class="form-container sign-in-container">
-		<form  action="" enctype="multipart/form-data" method="POST" >
+		<form  action="login" enctype="multipart/form-data" method="POST" >
 			<h1>Sign in</h1>
 			<div class="social-container">
 
@@ -344,12 +352,12 @@ footer a {
 	        <p id="invalid_name2"></p>
 			<input name="password" class="short" type="password" placeholder="Password"  id="password2" />
 			<p  id="invalid_password2"></p>
-			<a class="forgotpassword" href="#">Forgot your password?</a>
+
 		</div>
 		<br></br>
-			<a href="login">
-        <button onclick="validation2()">Sign In</button>
-      </a>
+
+      <button type="submit" onclick="validation2()">Sign In</button>
+    
 
 		</form>
 	</div>
